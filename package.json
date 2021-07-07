@@ -35,6 +35,9 @@
       "pre-commit": "lint-staged"
     }
   },
+  "eslintConfig": {
+    "extends": "eslint:recommended"
+  },
   "lint-staged": {
     "**/*.+(js|ts|yml|yaml|tsx)": [
       "eslint --fix",
