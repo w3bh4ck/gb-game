@@ -3,14 +3,15 @@ import { CARD_DATA } from "../src/_data/card.data";
 import GridBox from "../src/components/grid-box"
 
 export default function Home() {
+
+
+
 	return (
 		<StyleMainWrapper>
 			<StyleGridLayout>
 				{CARD_DATA && CARD_DATA.length > 0 ? CARD_DATA.map((label, index) => {
-					console.log("label", label, index)
-					return <GridBox key={index} label={label} number={5} />
+					return <GridBox key={index} index={index} label={label} />
 				}) : ""}
-
 			</StyleGridLayout>
 		</StyleMainWrapper>
 	);

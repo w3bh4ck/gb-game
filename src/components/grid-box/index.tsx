@@ -3,14 +3,27 @@ import React, { FC } from 'react';
 
 interface Iprops {
  label: string;
- number: number;
+ index: number;
 }
 
-const GridBox: FC<Iprops> = ({ label, number }) => {
+const formatId = (index: number): string => {
+ console.log("hello")
+ let row = Math.ceil((index + 1) / 5);
+ if (index + 1 > 0)
+  return `R${row}-C${index + 1}`
+}
+
+const GridBox: FC<Iprops> = ({ label, index }) => {
  return (
   <StyleBox>
-   <span>{number}</span>
-   <LabelWrapper>{label}</LabelWrapper>
+   <NumberWrapper>
+    <span className='number'>{formatId(index)}</span>
+   </NumberWrapper>
+   <LabelWrapper>
+    <span className='label'>
+     {label}
+    </span>
+   </LabelWrapper>
   </StyleBox>
  );
 };
@@ -25,10 +38,29 @@ const StyleBox = styled.div`
   @media (max-width: 768px) {
     font-size: 11px;
     height: 3rem;
+    .label{
+   padding: 0.1rem ;
+  }
   }
 `;
 const LabelWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 0.2rem;
+  .label{
+   color: #ccc;
+   padding: 1rem ;
+  }
+   @media (max-width: 768px) {
+    .label{
+   padding: 0.1rem ;
+  }
+  }
+`;
+const NumberWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  .number{
+   color: #ccc;
+   padding: 0.2rem;
+  }
 `;
