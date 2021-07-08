@@ -4,18 +4,18 @@ import React, { FC } from 'react';
 interface Iprops {
  label: string;
  index: number;
+ onClickCard: (index: number) => void
 }
 
 const formatId = (index: number): string => {
- console.log("hello")
  let row = Math.ceil((index + 1) / 5);
  if (index + 1 > 0)
-  return `R${row}-C${index + 1}`
+  return `R${row}-T${index + 1}`
 }
 
-const GridBox: FC<Iprops> = ({ label, index }) => {
+const GridBox: FC<Iprops> = ({ label, index, onClickCard }) => {
  return (
-  <StyleBox>
+  <StyleBox onClick={() => onClickCard(index)}>
    <NumberWrapper>
     <span className='number'>{formatId(index)}</span>
    </NumberWrapper>
@@ -51,7 +51,7 @@ const LabelWrapper = styled.div`
    padding: 1rem ;
   }
    @media (max-width: 768px) {
-    .label{
+  .label{
    padding: 0.1rem ;
   }
   }
