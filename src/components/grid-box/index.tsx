@@ -16,15 +16,17 @@ const formatId = (index: number): string => {
 
 const GridBox: FC<Iprops> = ({ label, index, onClickCard, selectedTiles }) => {
   return (
-    <StyleBox className={selectedTiles.includes(label) ? "selected" : ""} onClick={() => onClickCard(index, label)}>
-      <NumberWrapper>
-        <span className='number'>{formatId(index)}</span>
-      </NumberWrapper>
-      <LabelWrapper>
-        <span className={selectedTiles.includes(label) ? 'label selected' : "label"}>
-          {label}
-        </span>
-      </LabelWrapper>
+    <StyleBox onClick={() => onClickCard(index, label)}>
+      <div className={selectedTiles.includes(label) ? 'selected' : ""}>
+        <NumberWrapper>
+          <span className='number'>{formatId(index)}</span>
+        </NumberWrapper>
+        <LabelWrapper>
+          <span className={selectedTiles.includes(label) ? 'label selected' : "label"}>
+            {label}
+          </span>
+        </LabelWrapper>
+      </div>
     </StyleBox>
   );
 };
@@ -32,16 +34,15 @@ const GridBox: FC<Iprops> = ({ label, index, onClickCard, selectedTiles }) => {
 export default GridBox;
 
 const StyleBox = styled.div`
-  border: 0.1rem solid #ccc;
+  border: 0.1rem solid #006600;
   height: 6rem;
   border-radius: 0.2rem;
   cursor: pointer;
   .selected{
-    border: 2px solid #006600;
-    border-radius: 50%;
     color: white;
     opacity: 0.5;
-  background-image: linear-gradient(to right, #006600,  #003300);
+    height: 100%;
+    background-image: linear-gradient(to right, #006600,  #003300);
   }
   @media (max-width: 768px) {
     font-size: 11px;
