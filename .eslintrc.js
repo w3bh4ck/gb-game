@@ -10,7 +10,7 @@ module.exports = {
     },
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['react-hooks', 'testing-library', '@typescript-eslint', 'prettier'],
+  plugins: ['testing-library', '@typescript-eslint', 'prettier'],
   extends: ['eslint:recommended', 'next'],
   rules: {
     'react/no-unescaped-entities': 'off',
