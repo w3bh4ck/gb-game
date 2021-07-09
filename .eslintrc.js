@@ -21,8 +21,6 @@ module.exports = {
     'eslint-config-prettier',
   ],
   rules: {
-    semi: ['error', 'always'],
-    'no-undef': 'error',
     'no-empty': 'warn',
     'no-console': 'warn',
     'no-func-assign': 'error',
@@ -32,7 +30,6 @@ module.exports = {
     'jsx-a11y/href-no-hash': 'off',
     'react/react-in-jsx-scope': 'off',
     'react-hooks/exhaustive-deps': 'warn',
-    'react-hooks/rules-of-hooks': 'error',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-var-requires': 'off',
