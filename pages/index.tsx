@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { CARD_DATA } from '../src/_data/card.data';
 import GridBox from '../src/components/grid-box';
+import Modal from '../src/components/modal';
 
 export default function Home() {
 	// const [suffledTiles, setShuffledTiles]
-	const [winingStreak, setWinningStreak] = useState(0);
+	const [openModal, setOpenModal] = useState(false);
 	const [shuffledTiles, setShuffledTiles] = useState([]);
 	const [allSelectedTiles, setSelectedTiles] = useState([]);
+	const [winningStreak, setWinningStreaks] = useState({
+		rightDiagonal: false,
+		leftDiagonal: false,
+		horizontal: false,
+		vertical: false,
+	})
 	const [boardTrackingArray, setBoardTrackingArray] = useState([
 		[0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0],
@@ -20,6 +27,10 @@ export default function Home() {
 		onShuffleTiles();
 	}, []);
 
+
+	/**
+		* @description: Reshuffle the position of the tiles
+		*/
 	const onShuffleTiles = () => {
 		let maxTiles = 25;
 		let selected = [];
@@ -31,13 +42,33 @@ export default function Home() {
 				selected.push(CARD_DATA[randomIndex]);
 			}
 		}
+		setSelectedTiles(['Free'])
 		setShuffledTiles(selected);
+		setBoardTrackingArray([
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 1, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+		])
+		setWinningStreaks(
+			{
+				rightDiagonal: false,
+				leftDiagonal: false,
+				horizontal: false,
+				vertical: false,
+
+			})
 	};
 
+	/**
+		* @description perform actions on click of a tile
+		* @param index index of the tiles
+		* @param label labels of the tiles
+		*/
 	const onClickCard = (index: number, label: string) => {
 		let row = Math.ceil((index + 1) / 5); //get selected row
 		let col = index + 1 - (row - 1) * 5; //get selected column
-
 		//Update the board tracking array
 		let copyBoardArray = [...boardTrackingArray];
 		if (copyBoardArray[row - 1][col - 1] === 1) {
@@ -67,12 +98,17 @@ export default function Home() {
 		*/
 	const checkRowWins = array => {
 		let copyBoardArray = [...array];
+		let won = false;
 		let rowReducer = (accumulator, currentValue) => accumulator + currentValue;
-		copyBoardArray.forEach(row => {
-			if (row.reduce(rowReducer) === 5) {
-				setWinningStreak(winingStreak + 1);
-			}
-		});
+		if (winningStreak.horizontal === false) {
+			copyBoardArray.forEach(row => {
+				if (row.reduce(rowReducer) === 5) {
+					setWinningStreaks({ ...winningStreak, horizontal: true });
+					setOpenModal(true);
+				}
+			});
+		}
+		return won;
 	};
 
 	/**
@@ -84,8 +120,17 @@ export default function Home() {
 		let transposedArray = copyBoardArray[0].map((x, i) =>
 			copyBoardArray.map(x => x[i])
 		);
-		checkRowWins(transposedArray);
+		let rowReducer = (accumulator, currentValue) => accumulator + currentValue;
+		if (winningStreak.vertical === false) {
+			transposedArray.forEach(row => {
+				if (row.reduce(rowReducer) === 5) {
+					setWinningStreaks({ ...winningStreak, vertical: true });
+					setOpenModal(true);
+				}
+			});
+		}
 	};
+
 
 	/**
 		* @description| check if the diagonal winning condition has been met
@@ -97,19 +142,32 @@ export default function Home() {
 		let rightBaseNumber = 4;
 		let rightDiagonalTotal = 0;
 		let leftDiagonalTotal = 0;
-		for (let x = 0; x < array.length; x++) {
-			leftDiagonalTotal = leftDiagonalTotal + array[x][rightBaseNumber];
-			leftBaseNumber++;
+		if (winningStreak.leftDiagonal === false) {
+			for (let x = 0; x < array.length; x++) {
+				leftDiagonalTotal = leftDiagonalTotal + array[x][leftBaseNumber];
+				leftBaseNumber++;
+				if (leftDiagonalTotal === 5) {
+					setWinningStreaks({ ...winningStreak, leftDiagonal: true });
+					setOpenModal(true);
+				}
+			}
 		}
-		for (let y = 0; y < array.length; y++) {
-			rightDiagonalTotal = rightDiagonalTotal + array[y][rightBaseNumber];
-			rightBaseNumber--;
-		}
-		if (leftDiagonalTotal === 5 || rightDiagonalTotal === 5) {
-			setWinningStreak(winingStreak + 1);
+		if (winningStreak.rightDiagonal === false) {
+			for (let y = 0; y < array.length; y++) {
+				rightDiagonalTotal = rightDiagonalTotal + array[y][rightBaseNumber];
+				rightBaseNumber--;
+				if (rightDiagonalTotal === 5) {
+					setWinningStreaks({ ...winningStreak, rightDiagonal: true });
+					setOpenModal(true);
+				}
+			}
 		}
 	};
 
+	/**
+		* @description: Add or remove a selected tiles from the selected list
+		* @param label 
+		*/
 	const updateSelectedItems = label => {
 		let copySelectedItems = [...allSelectedTiles];
 		if (copySelectedItems.includes(label)) {
@@ -121,13 +179,17 @@ export default function Home() {
 		}
 	};
 
+	const onCloseModal = () => {
+		setOpenModal(!openModal)
+	}
+
 	return (
 		<Page>
 			<div>
 				<Header>Romantic Movie Bingo Card</Header>
 			</div>
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<StyledButton onClick={onShuffleTiles}>Reshuffle Tiles</StyledButton>
+				<StyledButton onClick={onShuffleTiles}>Reshuffle Tiles & Start</StyledButton>
 			</div>
 			<BoardWrapper>
 				<StyleGridLayout>
@@ -137,7 +199,7 @@ export default function Home() {
 								<GridBox
 									key={index}
 									index={index}
-									label={index === 12 ? 'free' : label}
+									label={index === 12 ? 'Free' : label}
 									onClickCard={onClickCard}
 									selectedTiles={allSelectedTiles}
 								/>
@@ -146,6 +208,7 @@ export default function Home() {
 						: ''}
 				</StyleGridLayout>
 			</BoardWrapper>
+			{openModal && <Modal onShuffleTiles={onShuffleTiles} message={"Bingo Won!"} onCloseModal={onCloseModal} />}
 		</Page>
 	);
 }
