@@ -11,7 +11,6 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   plugins: ['react-hooks', 'testing-library', '@typescript-eslint', 'prettier'],
-  extends: ['react-app'],
   rules: {
     semi: ['error', 'always'],
     'no-undef': 'error',
