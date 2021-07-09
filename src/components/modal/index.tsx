@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 
@@ -8,7 +8,7 @@ interface Iprops {
  onShuffleTiles: () => void
 }
 
-const Modal: FC<Iprops> = ({ message, onCloseModal, onShuffleTiles }) => {
+const Modal: React.FC<Iprops> = ({ message, onCloseModal, onShuffleTiles }) => {
  return (
   <StyledModal>
    <div className='modal-content'>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { FC } from 'react';
+import React from 'react';
 
 interface Iprops {
   label: string;
@@ -14,7 +14,7 @@ const formatId = (index: number): string => {
     return `R${row}-T${index + 1}`
 }
 
-const GridBox: FC<Iprops> = ({ label, index, onClickCard, selectedTiles }) => {
+const GridBox: React.FC<Iprops> = ({ label, index, onClickCard, selectedTiles }) => {
   return (
     <StyleBox onClick={() => onClickCard(index, label)}>
       <div className={selectedTiles.includes(label) ? 'selected' : ""}>

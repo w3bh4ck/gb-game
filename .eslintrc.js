@@ -10,18 +10,11 @@ module.exports = {
     },
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['react-hooks', 'testing-library', '@typescript-eslint', 'prettier'],
-  extends: [
-    'react-app',
-    'prettier',
-    'prettier/@typescript-eslint',
-    'plugin:testing-library/react',
-    'plugin:testing-library/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'eslint-config-prettier',
-  ],
+  plugins: ['testing-library', '@typescript-eslint', 'prettier'],
+  extends: ['eslint:recommended', 'next'],
   rules: {
-    // rules
+    'react/no-unescaped-entities': 'off',
+    '@next/next/no-page-custom-font': 'off',
   },
   settings: {
     react: {
