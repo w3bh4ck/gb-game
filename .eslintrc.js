@@ -21,10 +21,7 @@ module.exports = {
     'eslint-config-prettier',
   ],
   rules: {
-    'no-empty': 'warn',
-    'no-console': 'warn',
-    'no-func-assign': 'error',
-    'no-unreachable': 'error',
+    // rules
   },
   settings: {
     react: {
